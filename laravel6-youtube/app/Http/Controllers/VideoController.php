@@ -34,14 +34,15 @@ class VideoController extends Controller
     }
     public function CreateVideo(Request $request){ 
         $fullPathToVideo = $request->input('video');
-        
-        $fullpathToImage = storage_path('app/public/anh2.jpg');
         $video = YoutubeAPI::upload($fullPathToVideo, [
             'title'       => $request->input('title'),
             'description' => $request->input('description'),
             'tags'	      => $request->input('tags'),
-        ])->withThumbnail($fullpathToImage);      
-        return json_encode($video);
+        ]);             
+        $videoId = $video['id'];
+        $playlistId = $request->input('playlistId');
+        $insert = YoutubeAPI::insertVideoInPlaylist($videoId,$playlistId);;
+        return json_encode($insert);
     }
     public function GetAllPlayList(Request $request){
         $playlists =YoutubeAPI::getAllPlayList();
