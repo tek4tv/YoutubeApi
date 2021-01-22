@@ -24,28 +24,31 @@ class VideoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function GetAccount(Request $request)
+    public function SetEnv(Request $request)
     {
-        $GOOGLE_CLIENT_ID = $request->input('GOOGLE_CLIENT_ID');
-        $GOOGLE_CLIENT_SECRET = $request->input('GOOGLE_CLIENT_SECRET');
-        $this->setEnvironmentValue('GOOGLE_CLIENT_ID', $GOOGLE_CLIENT_ID);
-        $this->setEnvironmentValue('GOOGLE_CLIENT_SECRET', $GOOGLE_CLIENT_SECRET);
-        return "true";
+        $demo = $request->input('demo');
+        $value =env('DEMO', $demo);
+        return $value;
     }
     public function CreateVideo(Request $request){ 
         $fullPathToVideo = $request->input('video');
+        $inputToken = $request->input('Token');
         $video = YoutubeAPI::upload($fullPathToVideo, [
             'title'       => $request->input('title'),
             'description' => $request->input('description'),
             'tags'	      => $request->input('tags'),
-        ]);             
+            'publishAt'   => $request->input('publishAt')
+        ],'private',$inputToken);             
         $videoId = $video['id'];
+        $thumbnail = $request->input('thubnail');
+        YoutubeAPI::SetThumbnail($thumbnail,$videoId,$inputToken);
         $playlistId = $request->input('playlistId');
-        $insert = YoutubeAPI::insertVideoInPlaylist($videoId,$playlistId);;
+        $insert = YoutubeAPI::insertVideoInPlaylist($videoId,$playlistId,$inputToken);
         return json_encode($insert);
     }
     public function GetAllPlayList(Request $request){
-        $playlists =YoutubeAPI::getAllPlayList();
+        $inputToken = $request->input('Token');
+        $playlists =YoutubeAPI::getAllPlayList($inputToken);
         return json_encode($playlists);
     }
     public function GetPlaylistById(Request $request){
@@ -63,7 +66,8 @@ class VideoController extends Controller
         $playlistName = $request->input('playlistName');
         $descriptions = $request->input('descriptions');
         $privacy = $request->input('privacy');
-        $playlist = YoutubeAPI::createPlaylist($playlistName,$descriptions,$privacy);
+        $inputToken=$request->input('Token');
+        $playlist = YoutubeAPI::createPlaylist($playlistName,$descriptions,$privacy,$inputToken);
     }
     public function DeleteVideo(Request $request){
         $videoId = $request->input('videoId');

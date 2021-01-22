@@ -18,11 +18,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('/CreateVideo',"VideoController@CreateVideo");
-Route::get('/Playlists',"VideoController@GetAllPlayList");
+Route::post('/Playlists',"VideoController@GetAllPlayList");
 Route::post('/PlaylistById',"VideoController@GetPlaylistById");
 Route::post('/CreatePlaylits',"VideoController@CreatePlaylist");
 Route::post('/InsertToPlaylist',"VideoController@InsertToPlaylist");
 Route::post('/Delete',"VideoController@DeleteVideo");
+
+Route::post('/SetEnv',"VideoController@SetEnv");
+
 
 
 
