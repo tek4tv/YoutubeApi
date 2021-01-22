@@ -24,11 +24,10 @@ class VideoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function SetEnv(Request $request)
+    public function GetToken(Request $request)
     {
-        $demo = $request->input('demo');
-        $value =env('DEMO', $demo);
-        return $value;
+        
+        return YoutubeAPI::getLatestAccessTokenFromDB();
     }
     public function CreateVideo(Request $request){ 
         $fullPathToVideo = $request->input('video');

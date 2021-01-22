@@ -23,7 +23,7 @@ Route::post('/PlaylistById',"VideoController@GetPlaylistById");
 Route::post('/CreatePlaylits',"VideoController@CreatePlaylist");
 Route::post('/InsertToPlaylist',"VideoController@InsertToPlaylist");
 Route::post('/Delete',"VideoController@DeleteVideo");
-
+Route::get('/Token',"VideoController@GetToken");
 Route::post('/SetEnv',"VideoController@SetEnv");
 
 
