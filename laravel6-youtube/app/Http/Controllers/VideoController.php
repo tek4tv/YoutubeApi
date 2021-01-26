@@ -23,54 +23,40 @@ class VideoController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
-     */
-    public function GetToken(Request $request)
-    {
-        
-        return YoutubeAPI::getLatestAccessTokenFromDB();
-    }
+     */ 
     public function CreateVideo(Request $request){ 
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
         $fullPathToVideo = $request->input('video');
-        $inputToken = $request->input('Token');
+        $obj = $request->input('Object');
+        $privacyStatus = $request->input('status');
+        //$scheduled_publish_time = $request->input('publishAt');
+       // $datetime = date($scheduled_publish_time);
+        
         $video = YoutubeAPI::upload($fullPathToVideo, [
             'title'       => $request->input('title'),
             'description' => $request->input('description'),
-            'tags'	      => $request->input('tags'),
-            'publishAt'   => $request->input('publishAt')
-        ],'private',$inputToken);             
+            'tags'	      => $request->input('tags')
+        ],$privacyStatus,$obj); 
         $videoId = $video['id'];
-        $thumbnail = $request->input('thubnail');
-        YoutubeAPI::SetThumbnail($thumbnail,$videoId,$inputToken);
         $playlistId = $request->input('playlistId');
-        $insert = YoutubeAPI::insertVideoInPlaylist($videoId,$playlistId,$inputToken);
+        $insert = YoutubeAPI::insertVideoInPlaylist($videoId,$playlistId,$obj);   
+        $thumbnail = $request->input('thumbnail');
+        YoutubeAPI::withThumbnail($thumbnail,$videoId);    
         return json_encode($insert);
     }
     public function GetAllPlayList(Request $request){
-        $inputToken = $request->input('Token');
-        $playlists =YoutubeAPI::getAllPlayList($inputToken);
+        $obj = $request->input('Object');
+        $playlists =YoutubeAPI::getAllPlayList($obj);
         return json_encode($playlists);
     }
-    public function GetPlaylistById(Request $request){
-        $playlistId =$request->input('playlistId');
-        $playlist = YoutubeAPI::playListInfoById($playlistId);
-        return json_encode($playlist);
-    }
-    public function InsertToPlaylist(Request $request){
-        $videoId = $request->input('videoId');
-        $playlistId = $request->input('playlistId');
-        $insert = YoutubeAPI::insertVideoInPlaylist($videoId,$playlistId);;
-        return json_encode($insert);
-    }
+  
+    // api tạo playlist
     public function CreatePlaylist(Request $request){
         $playlistName = $request->input('playlistName');
         $descriptions = $request->input('descriptions');
         $privacy = $request->input('privacy');
-        $inputToken=$request->input('Token');
-        $playlist = YoutubeAPI::createPlaylist($playlistName,$descriptions,$privacy,$inputToken);
+        $obj=$request->input('Object');
+        $playlist = YoutubeAPI::createPlaylist($playlistName,$descriptions,$privacy, $obj);
     }
-    public function DeleteVideo(Request $request){
-        $videoId = $request->input('videoId');
-        $video = YoutubeAPI::delete($videoId);
-        return json_encode($video);
-    }
+    
 }

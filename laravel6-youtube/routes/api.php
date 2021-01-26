@@ -16,15 +16,25 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::post('/playlists',"VideoController@GetAllPlayList");
+Route::post('/CreatePlaylits',"VideoController@CreatePlaylist");
 
 Route::post('/CreateVideo',"VideoController@CreateVideo");
-Route::post('/Playlists',"VideoController@GetAllPlayList");
+
+
+
 Route::post('/PlaylistById',"VideoController@GetPlaylistById");
-Route::post('/CreatePlaylits',"VideoController@CreatePlaylist");
+
 Route::post('/InsertToPlaylist',"VideoController@InsertToPlaylist");
 Route::post('/Delete',"VideoController@DeleteVideo");
 Route::get('/Token',"VideoController@GetToken");
 Route::post('/SetEnv',"VideoController@SetEnv");
+
+Route::post('/refresh',"VideoController@RefreshToken");
+
+
+
+
 
 
 
