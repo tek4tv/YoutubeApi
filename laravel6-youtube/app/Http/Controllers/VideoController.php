@@ -58,5 +58,10 @@ class VideoController extends Controller
         $obj=$request->input('Object');
         $playlist = YoutubeAPI::createPlaylist($playlistName,$descriptions,$privacy, $obj);
     }
-    
+    // get token
+
+    public function GetToken(){
+        $obj = YoutubeAPI::GetObject();
+        return json_encode($obj);
+    }
 }

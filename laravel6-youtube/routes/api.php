@@ -20,14 +20,14 @@ Route::post('/playlists',"VideoController@GetAllPlayList");
 Route::post('/CreatePlaylits',"VideoController@CreatePlaylist");
 
 Route::post('/CreateVideo',"VideoController@CreateVideo");
-
+Route::get('/token',"VideoController@GetToken");
 
 
 Route::post('/PlaylistById',"VideoController@GetPlaylistById");
 
 Route::post('/InsertToPlaylist',"VideoController@InsertToPlaylist");
 Route::post('/Delete',"VideoController@DeleteVideo");
-Route::get('/Token',"VideoController@GetToken");
+
 Route::post('/SetEnv',"VideoController@SetEnv");
 
 Route::post('/refresh',"VideoController@RefreshToken");
