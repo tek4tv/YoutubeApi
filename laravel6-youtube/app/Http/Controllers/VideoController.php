@@ -62,6 +62,6 @@ class VideoController extends Controller
 
     public function GetToken(){
         $obj = YoutubeAPI::GetObject();
-        return json_encode($obj);
+        return $obj;
     }
 }
