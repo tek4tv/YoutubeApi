@@ -26,7 +26,9 @@
             url: "/api/token",
             type: 'GET'
         }).done(function (data) {
-            $('#input-token').val(data)      
+            json = JSON.parse(data)
+            console.log(json)
+            $('#input-token').val(JSON.stringify(json))      
         });
     });
 
